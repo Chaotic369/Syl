@@ -100,7 +100,7 @@ tailwind.config = {
 
     <div class="flex flex-wrap gap-4 mb-8 px-2">
           <button onclick="switchTab('sem3')" id="tab-sem3" class="px-6 py-3 font-medium text-sm shadow-neu-in text-neu-highlight rounded-2xl transition-all">Semester III</button>
-          <button onclick="switchTab('sem1')" id="tab-sem1" class="px-6 py-3 font-medium text-sm shadow-neu-out text-neu-text hover:text-neu-highlight rounded-2xl transition-all">Semester I</button>
+          <button onclick="switchTab('sem1')" id="tab-sem1" class="px-6 py-3 font-medium text-sm shadow-neu-out text-red-500 hover:text-red-600 rounded-2xl transition-all">Semester I</button>
         </div>
 
         <div id="subject-roots" class="flex flex-wrap gap-3 mb-10 px-2 hidden"></div>
@@ -598,11 +598,17 @@ tailwind.config = {
         ['sem3', 'sem1'].forEach(t => {
           const btn = document.getElementById(`tab-${t}`);
           if (btn) {
-            if (t === type) {
-              btn.className = "px-6 py-3 font-medium text-sm shadow-neu-in text-neu-highlight rounded-2xl transition-all";
+            const isSelected = (t === type);
+            const shadow = isSelected ? "shadow-neu-in" : "shadow-neu-out";
+        
+            let color = "";
+            if (t === 'sem1') {
+              color = isSelected ? "text-red-600" : "text-red-500 hover:text-red-600";
             } else {
-              btn.className = "px-6 py-3 font-medium text-sm shadow-neu-out text-neu-text hover:text-neu-highlight rounded-2xl transition-all";
+              color = isSelected ? "text-neu-highlight" : "text-neu-text hover:text-neu-highlight";
             }
+        
+            btn.className = `px-6 py-3 font-medium text-sm rounded-2xl transition-all ${shadow} ${color}`;
           }
         });
         renderSubjectRoots();
