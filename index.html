@@ -421,29 +421,29 @@ tailwind.config = {
       if (targetedActiveFilter === 'sem3' && subject.semester !== 3) return;
 
       const subjectCard = document.createElement('div');
-      subjectCard.className = "bg-neu-bg shadow-neu-out rounded-[30px] overflow-hidden flex flex-col justify-between p-6";
-      subjectCard.id = `card-${subject.id}`;
+            subjectCard.className = "flex flex-col mb-8";
+            subjectCard.id = `card-${subject.id}`;
 
-      let html = `
-        <div class="flex flex-col h-full">
-          <div class="mb-6 px-2">
-            <div class="flex justify-between items-start gap-2 mb-4">
-              <div>
-                <span class="text-[10px] font-mono tracking-widest font-medium text-neu-highlight shadow-neu-sm-in px-3 py-1 rounded-full">SEM ${subject.semester} • ${subject.code}</span>
-                <h3 class="font-light text-xl text-neu-text mt-4 tracking-wide">${subject.title}</h3>
-              </div>
-              <div class="text-right">
-                <span id="perc-${subject.id}" class="font-mono text-lg font-light text-neu-highlight">0%</span>
-              </div>
-            </div>
+            let html = `
+              <div class="flex flex-col h-full">
+                <div class="mb-6 px-2">
+                  <div class="flex justify-between items-end gap-2 mb-3">
+                    <div>
+                      <span class="text-xs font-mono tracking-widest font-medium text-neu-accent uppercase block mb-1">SEM ${subject.semester} • ${subject.code}</span>
+                      <h3 class="font-light text-2xl text-neu-text tracking-wide">${subject.title}</h3>
+                    </div>
+                    <div class="text-right mb-1">
+                      <span id="perc-${subject.id}" class="font-mono text-lg font-light text-neu-highlight">0%</span>
+                    </div>
+                  </div>
             
-            <div class="w-full shadow-neu-in h-3 rounded-full overflow-hidden p-1">
-              <div id="bar-${subject.id}" class="bg-neu-bg shadow-neu-out h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
-            </div>
-          </div>
+                  <div class="w-full shadow-neu-in h-3 rounded-full overflow-hidden p-1">
+                    <div id="bar-${subject.id}" class="bg-neu-bg shadow-neu-out h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+                  </div>
+                </div>
           
-          <div class="space-y-6 max-h-[350px] overflow-y-auto custom-scrollbar px-2 py-2">
-      `;
+                <div class="space-y-6 px-2 py-2">
+            `;
 
       subject.units.forEach((unit, unitIdx) => {
         html += `
