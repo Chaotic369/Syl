@@ -668,52 +668,77 @@ tailwind.config = {
     }
 
   async function saveCloudState() {
-    updateSyncStatus('Syncing changes...', true);
-    try {
-      await USER_DOC.set({ completedTopicsMap });
-      updateSyncStatus('Cloud Synced');
-    } catch (e) {
-      console.error("Cloud synchronization failure:", e);
-      updateSyncStatus('Sync Error (Check Console)', false, true);
+      updateSyncStatus('Syncing changes...', true);
+      try {
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        await USER_DOC.set({ 
+          completedTopicsMap,
+          theme: isDark ? 'dark' : 'light'
+        }, { merge: true });
+        updateSyncStatus('Cloud Synced');
+      } catch (e) {
+        console.error("Cloud synchronization failure:", e);
+        updateSyncStatus('Sync Error (Check Console)', false, true);
+      }
     }
-  }
 
-  function toggleTheme() {
-      const root = document.documentElement;
-      root.classList.toggle('dark-mode');
-      const isDark = root.classList.contains('dark-mode');
-      localStorage.setItem('bca-theme', isDark ? 'dark' : 'light');
+    function toggleTheme() {
+        const root = document.documentElement;
+        root.classList.toggle('dark-mode');
+        const isDark = root.classList.contains('dark-mode');
+        localStorage.setItem('bca-theme', isDark ? 'dark' : 'light');
     
-      const icon = document.querySelector('#theme-toggle i');
-      if (icon) {
-        icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', async () => {
-      // Ensure correct icon is set based on initial theme
-      const isDark = document.documentElement.classList.contains('dark-mode');
-      const icon = document.querySelector('#theme-toggle i');
-      if (icon) {
-        icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-      }
-
-      updateSyncStatus('Loading curriculum data...', true);
-    try {
-      const doc = await USER_DOC.get();
-      if (doc.exists) {
-        completedTopicsMap = doc.data().completedTopicsMap || {};
-        updateSyncStatus('Data Loaded & Synced');
-      } else {
-        updateSyncStatus('New Profile Ready');
-      }
-    } catch(e) {
-          console.error("Initialization data lookup crashed:", e);
-          updateSyncStatus('Offline / Connection Failed', false, true);
+        const icon = document.querySelector('#theme-toggle i');
+        if (icon) {
+          icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
-        renderSubjectRoots();
-        renderCurriculumStructure();
-      });
+      
+        // Trigger cloud sync to save the theme preference
+        if (typeof saveCloudState === 'function') {
+          saveCloudState();
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', async () => {
+        // Ensure correct icon is set based on initial theme
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        const icon = document.querySelector('#theme-toggle i');
+        if (icon) {
+          icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        updateSyncStatus('Loading curriculum data...', true);
+      try {
+        const doc = await USER_DOC.get();
+        if (doc.exists) {
+          const data = doc.data();
+          completedTopicsMap = data.completedTopicsMap || {};
+        
+          // Sync theme from cloud if it exists
+          if (data.theme) {
+            const cloudIsDark = data.theme === 'dark';
+            if (cloudIsDark) {
+              document.documentElement.classList.add('dark-mode');
+            } else {
+              document.documentElement.classList.remove('dark-mode');
+            }
+            localStorage.setItem('bca-theme', data.theme);
+            if (icon) {
+              icon.className = cloudIsDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            }
+          }
+
+          updateSyncStatus('Data Loaded & Synced');
+        } else {
+          updateSyncStatus('New Profile Ready');
+        }
+      } catch(e) {
+            console.error("Initialization data lookup crashed:", e);
+            updateSyncStatus('Offline / Connection Failed', false, true);
+          }
+          renderSubjectRoots();
+          renderCurriculumStructure();
+        });
   </script>
 </body>
 </html>
