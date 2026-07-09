@@ -469,19 +469,22 @@ tailwind.config = {
         `;
 
         unit.topics.forEach((topic, topicIdx) => {
-          const uniqueId = `${subject.id}_u${unitIdx}_t${topicIdx}`;
-          html += `
-            <li class="flex items-start space-x-3 text-xs text-neu-text transition-colors group">
-              <input 
-                type="checkbox" 
-                id="${uniqueId}" 
-                class="mt-0.5 flex-shrink-0 cursor-pointer"
-                onchange="toggleTopicCompletion('${uniqueId}')"
-              >
-              <label for="${uniqueId}" class="cursor-pointer select-none leading-relaxed font-light">${topic}</label>
-            </li>
-          `;
-        });
+                  const uniqueId = `${subject.id}_u${unitIdx}_t${topicIdx}`;
+                  html += `
+                    <li class="flex items-start space-x-3 text-xs text-neu-text transition-colors group">
+                      <input 
+                        type="checkbox" 
+                        id="${uniqueId}" 
+                        class="mt-0.5 flex-shrink-0 cursor-pointer"
+                        onchange="toggleTopicCompletion('${uniqueId}')"
+                      >
+                      <div class="flex-1">
+                        <label for="${uniqueId}" class="cursor-pointer select-none leading-relaxed font-light block">${topic}</label>
+                        <span id="ts-${uniqueId}" class="text-[9px] text-neu-accent mt-0.5 font-mono empty:hidden block"></span>
+                      </div>
+                    </li>
+                  `;
+                });
 
         html += `</ul></div>`;
       });
@@ -530,20 +533,37 @@ tailwind.config = {
       }
 
   function toggleTopicCompletion(id) {
-    const el = document.getElementById(id);
-    if (el) {
-      completedTopicsMap[id] = el.checked;
-      evaluateProgressCalculations();
-      saveCloudState();
-    }
-  }
-
-  function restoreCheckboxStates() {
-    Object.keys(completedTopicsMap).forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.checked = !!completedTopicsMap[id];
-    });
-  }
+      const tsEl = document.getElementById(`ts-${id}`);
+      if (el) {
+        if (el.checked) {
+          const now = new Date();
+          const dateString = now.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+          completedTopicsMap[id] = dateString;
+          if (tsEl) tsEl.innerText = dateString;
+        } else {
+          delete completedTopicsMap[id];
+          if (tsEl) tsEl.innerText = "";
+        }
+        evaluateProgressCalculations();
+        saveCloudState();
+      }
+    }
+
+    function restoreCheckboxStates() {
+      Object.keys(completedTopicsMap).forEach(id => {
+        const el = document.getElementById(id);
+        const tsEl = document.getElementById(`ts-${id}`);
+        const val = completedTopicsMap[id];
+        if (el && val) {
+          el.checked = true;
+          if (tsEl) {
+            // Backward compatibility check for old boolean values from previous saves
+            tsEl.innerText = val === true ? "Completed" : val;
+          }
+        }
+      });
+    }
 
   function renderSubjectRoots() {
       const container = document.getElementById('subject-roots');
