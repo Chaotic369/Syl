@@ -86,52 +86,17 @@ tailwind.config = {
 </head>
 <body class="font-sans antialiased min-height-screen pb-12">
 
-  <header class="max-w-7xl mx-auto px-4 pt-6 pb-2 sticky top-0 z-50">
-    <div class="bg-neu-bg shadow-neu-out rounded-[30px] px-6 py-4 flex flex-wrap justify-between items-center">
-      <div class="flex items-center space-x-4">
-        <div class="w-12 h-12 rounded-full shadow-neu-out flex items-center justify-center text-neu-highlight text-xl">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-        <div>
-          <h1 class="font-light text-xl tracking-wide text-neu-text">Srinath University Tracker</h1>
-          <p class="text-[10px] text-neu-accent uppercase font-mono tracking-widest mt-1">BCA Generative AI & ML</p>
-        </div>
-      </div>
-      <div class="flex items-center space-x-4 mt-4 sm:mt-0">
-        <div id="sync-status" class="font-mono text-xs text-neu-text shadow-neu-in px-4 py-2.5 rounded-xl flex items-center gap-2">
-          <i class="fa-solid fa-cloud-arrow-up text-neu-highlight animate-pulse"></i> Initializing...
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-4 py-8">
+  <main class="max-w-7xl mx-auto px-4 py-8 pt-12">
     
-    <section class="bg-neu-bg shadow-neu-out rounded-[40px] p-8 mb-12 flex flex-col md:flex-row items-center justify-between gap-10">
-      <div class="space-y-5 flex-1 px-2">
-        <span class="shadow-neu-sm-out text-neu-highlight font-mono text-xs font-medium px-4 py-2 rounded-full inline-block">ACADEMIC DASHBOARD</span>
-        <h2 class="text-3xl font-light tracking-wide text-neu-text sm:text-4xl">Course Syllabus Completion Monitor</h2>
-        <p class="text-neu-accent text-sm max-w-2xl leading-relaxed font-light">
-          Track and synchronize your milestones dynamically across your Semester 1 Mathematics foundations and your full comprehensive Semester 3 curriculum pipeline.
-        </p>
-      </div>
-      
-      <div class="w-full md:w-80 bg-neu-bg shadow-neu-in p-8 rounded-[30px] flex flex-col justify-between space-y-8">
-        <div>
-          <div class="flex justify-between items-end mb-4">
-            <span class="text-xs font-medium font-mono text-neu-accent tracking-widest">TOTAL STATUS</span>
-            <span id="global-perc" class="text-4xl font-light font-mono text-neu-highlight">0%</span>
-          </div>
-          <div class="w-full shadow-neu-in rounded-full h-4 overflow-hidden p-1">
+      <section class="mb-12 flex justify-center">
+        <div class="w-full max-w-3xl bg-neu-bg shadow-neu-out p-6 rounded-full flex items-center gap-6">
+          <div id="sync-dot" class="w-4 h-4 rounded-full bg-neu-accent shrink-0 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2)] transition-colors duration-300 ml-2" title="Initializing..."></div>
+          <div class="w-full shadow-neu-in rounded-full h-5 overflow-hidden p-1.5 flex-1">
             <div id="global-progress-bar" class="shadow-neu-out h-full rounded-full transition-all duration-500 ease-out bg-neu-bg" style="width: 0%"></div>
           </div>
+          <span id="global-perc" class="text-2xl font-light font-mono text-neu-highlight shrink-0 w-16 text-right mr-4">0%</span>
         </div>
-        <div class="text-xs text-neu-accent font-mono flex justify-between px-1">
-          <span>Completed: <strong id="global-count" class="text-neu-text font-medium">0</strong> items</span>
-          <span>Remaining: <strong id="global-rem" class="text-neu-text font-medium">0</strong> left</span>
-        </div>
-      </div>
-    </section>
+      </section>
 
     <div class="flex flex-wrap gap-4 mb-10 px-2">
       <button onclick="switchTab('all')" id="tab-all" class="px-6 py-3 font-medium text-sm shadow-neu-in text-neu-highlight rounded-2xl transition-all">All Semesters</button>
@@ -546,11 +511,9 @@ tailwind.config = {
     });
 
     const globalPerc = grandTotalCount > 0 ? Math.round((grandCompletedCount / grandTotalCount) * 100) : 0;
-    document.getElementById('global-progress-bar').style.width = `${globalPerc}%`;
-    document.getElementById('global-perc').innerText = `${globalPerc}%`;
-    document.getElementById('global-count').innerText = grandCompletedCount;
-    document.getElementById('global-rem').innerText = (grandTotalCount - grandCompletedCount);
-  }
+        document.getElementById('global-progress-bar').style.width = `${globalPerc}%`;
+        document.getElementById('global-perc').innerText = `${globalPerc}%`;
+      }
 
   function toggleTopicCompletion(id) {
     const el = document.getElementById(id);
@@ -582,15 +545,21 @@ tailwind.config = {
   }
 
   function updateSyncStatus(msg, isProcessing = false, isError = false) {
-    const statusBox = document.getElementById('sync-status');
-    if (isProcessing) {
-      statusBox.innerHTML = `<i class="fa-solid fa-arrows-rotate text-neu-highlight animate-spin"></i> ${msg}`;
-    } else if (isError) {
-      statusBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-red-400"></i> <span class="text-red-400 font-medium">${msg}</span>`;
-    } else {
-      statusBox.innerHTML = `<i class="fa-solid fa-cloud-check text-neu-highlight"></i> <span class="text-neu-highlight font-medium">${msg}</span>`;
+      const dot = document.getElementById('sync-dot');
+      if (!dot) return;
+    
+      dot.classList.remove('bg-neu-accent', 'bg-green-400', 'bg-red-500', 'animate-pulse');
+    
+      if (isProcessing) {
+        dot.classList.add('bg-neu-accent', 'animate-pulse');
+      } else if (isError) {
+        dot.classList.add('bg-red-500');
+      } else {
+        dot.classList.add('bg-green-400');
+      }
+    
+      dot.title = msg;
     }
-  }
 
   async function saveCloudState() {
     updateSyncStatus('Syncing changes...', true);
