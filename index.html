@@ -84,79 +84,70 @@ tailwind.config = {
   }
 </style>
 </head>
-<body class="font-sans antialiased min-height-screen">
+<body class="font-sans antialiased min-height-screen pb-12">
 
-  <!-- VLC Style Top Bar Navigation Header -->
-  <header class="bg-white border-b border-vlc-border sticky top-0 z-50 transition-all shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <!-- VLC Orange Cone Icon Emulation via FontAwesome -->
-        <i class="fa-solid fa-traffic-cone text-vlc-orange text-3xl"></i>
+  <header class="max-w-7xl mx-auto px-4 pt-6 pb-2 sticky top-0 z-50">
+    <div class="bg-neu-bg shadow-neu-out rounded-[30px] px-6 py-4 flex flex-wrap justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-full shadow-neu-out flex items-center justify-center text-neu-highlight text-xl">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
         <div>
-          <h1 class="font-bold text-lg tracking-tight text-vlc-textDark">Srinath University Tracker</h1>
-          <p class="text-xs text-vlc-textMuted uppercase font-mono tracking-widest">BCA Generative AI & ML</p>
+          <h1 class="font-light text-xl tracking-wide text-neu-text">Srinath University Tracker</h1>
+          <p class="text-[10px] text-neu-accent uppercase font-mono tracking-widest mt-1">BCA Generative AI & ML</p>
         </div>
       </div>
-      <div class="flex items-center space-x-4 mt-2 sm:mt-0">
-        <div id="sync-status" class="font-mono text-xs text-vlc-textMuted bg-vlc-warmBg px-3 py-1.5 rounded border border-vlc-border flex items-center gap-2">
-          <i class="fa-solid fa-cloud-arrow-up text-vlc-orange animate-pulse"></i> Initializing...
+      <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+        <div id="sync-status" class="font-mono text-xs text-neu-text shadow-neu-in px-4 py-2.5 rounded-xl flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up text-neu-highlight animate-pulse"></i> Initializing...
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Main Showcase Container mimicking VLC Website Layout Structure -->
   <main class="max-w-7xl mx-auto px-4 py-8">
     
-    <!-- Hero Box (VLC Download Widget Style Showcase Layout) -->
-    <section class="bg-white border border-vlc-border rounded-xl p-6 mb-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 bg-gradient-to-br from-white to-[#fffdf9]">
-      <div class="space-y-3 flex-1">
-        <span class="bg-amber-100 text-vlc-orange font-mono text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">ACADEMIC DASHBOARD</span>
-        <h2 class="text-2xl font-bold tracking-tight text-vlc-textDark sm:text-3xl">Course Syllabus Completion Monitor</h2>
-        <p class="text-vlc-textMuted text-sm max-w-2xl leading-relaxed">
+    <section class="bg-neu-bg shadow-neu-out rounded-[40px] p-8 mb-12 flex flex-col md:flex-row items-center justify-between gap-10">
+      <div class="space-y-5 flex-1 px-2">
+        <span class="shadow-neu-sm-out text-neu-highlight font-mono text-xs font-medium px-4 py-2 rounded-full inline-block">ACADEMIC DASHBOARD</span>
+        <h2 class="text-3xl font-light tracking-wide text-neu-text sm:text-4xl">Course Syllabus Completion Monitor</h2>
+        <p class="text-neu-accent text-sm max-w-2xl leading-relaxed font-light">
           Track and synchronize your milestones dynamically across your Semester 1 Mathematics foundations and your full comprehensive Semester 3 curriculum pipeline.
         </p>
       </div>
       
-      <!-- Big VLC Download Style Global Tracker Component -->
-      <div class="w-full md:w-80 bg-vlc-warmBg border border-vlc-border p-5 rounded-xl shadow-inner flex flex-col justify-between space-y-4">
+      <div class="w-full md:w-80 bg-neu-bg shadow-neu-in p-8 rounded-[30px] flex flex-col justify-between space-y-8">
         <div>
-          <div class="flex justify-between items-end mb-1">
-            <span class="text-xs font-bold font-mono text-vlc-textDark">TOTAL SYLLABUS STATUS</span>
-            <span id="global-perc" class="text-2xl font-black font-mono text-vlc-orange">0%</span>
+          <div class="flex justify-between items-end mb-4">
+            <span class="text-xs font-medium font-mono text-neu-accent tracking-widest">TOTAL STATUS</span>
+            <span id="global-perc" class="text-4xl font-light font-mono text-neu-highlight">0%</span>
           </div>
-          <!-- Target Progress Bar -->
-          <div class="w-full bg-orange-100 rounded-full h-4 overflow-hidden border border-orange-200 p-0.5">
-            <div id="global-progress-bar" class="bg-vlc-orange h-full rounded-full transition-all duration-500 ease-out style='width: 0%'"></div>
+          <div class="w-full shadow-neu-in rounded-full h-4 overflow-hidden p-1">
+            <div id="global-progress-bar" class="shadow-neu-out h-full rounded-full transition-all duration-500 ease-out bg-neu-bg" style="width: 0%"></div>
           </div>
         </div>
-        <div class="text-xs text-vlc-textMuted font-mono flex justify-between">
-          <span>Completed: <strong id="global-count" class="text-vlc-textDark">0</strong> items</span>
-          <span>Remaining: <strong id="global-rem" class="text-vlc-textDark">0</strong> left</span>
+        <div class="text-xs text-neu-accent font-mono flex justify-between px-1">
+          <span>Completed: <strong id="global-count" class="text-neu-text font-medium">0</strong> items</span>
+          <span>Remaining: <strong id="global-rem" class="text-neu-text font-medium">0</strong> left</span>
         </div>
       </div>
     </section>
 
-    <!-- Semester Content Selector Toggles -->
-    <div class="flex space-x-2 border-b border-vlc-border mb-6">
-      <button onclick="switchTab('all')" id="tab-all" class="px-5 py-2.5 font-bold text-sm border-b-2 border-vlc-orange text-vlc-orange transition-all">All Semesters</button>
-      <button onclick="switchTab('sem1')" id="tab-sem1" class="px-5 py-2.5 font-medium text-sm text-vlc-textMuted hover:text-vlc-textDark transition-all">Semester I</button>
-      <button onclick="switchTab('sem3')" id="tab-sem3" class="px-5 py-2.5 font-medium text-sm text-vlc-textMuted hover:text-vlc-textDark transition-all">Semester III</button>
+    <div class="flex flex-wrap gap-4 mb-10 px-2">
+      <button onclick="switchTab('all')" id="tab-all" class="px-6 py-3 font-medium text-sm shadow-neu-in text-neu-highlight rounded-2xl transition-all">All Semesters</button>
+      <button onclick="switchTab('sem1')" id="tab-sem1" class="px-6 py-3 font-medium text-sm shadow-neu-out text-neu-text hover:text-neu-highlight rounded-2xl transition-all">Semester I</button>
+      <button onclick="switchTab('sem3')" id="tab-sem3" class="px-6 py-3 font-medium text-sm shadow-neu-out text-neu-text hover:text-neu-highlight rounded-2xl transition-all">Semester III</button>
     </div>
 
-    <!-- Dynamic Target Container for Subject Cards Grid -->
-    <div id="subject-grid-root" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Injected programmatically via structural JSON arrays below -->
-    </div>
+    <div id="subject-grid-root" class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      </div>
 
   </main>
 
-  <!-- Legacy Core Scripts Compat Integrations -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <script>
-  // Complete Syllabus Dataset (Books and Resource items completely excluded)
   const curriculumSyllabus = [
     {
       id: "sem1_discrete_math",
@@ -226,13 +217,6 @@ tailwind.config = {
             "Memory Management Requirements", "Fixed and Variable Partitioning", "Allocation Strategies (First Fit, Best Fit, Worst Fit)", 
             "Fragmentation & Swapping", "Paging and Segmentation structures", "Demand Paging mechanisms", 
             "Performance of Demand Paging & Page Replacement", "Disk Basics & Storage structures", "Disk Scheduling & Total Transfer Time"
-          ]
-        },
-        {
-          name: "Unit 4: File System",
-          topics: [
-            "File Allocation Methods", "Free-space Management", "File Organization and Access Mechanisms", 
-            "File Directories & Sharing", "File System Implementation Issues", "File System Protection and Security"
           ]
         }
       ]
@@ -447,7 +431,6 @@ tailwind.config = {
     }
   ];
 
-  // Cloud Project Infrastructure Initialization Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAHDMiGbQT6mgYON0mMmGTfmeGSkKMgPBM",
     authDomain: "qnea-aff56.firebaseapp.com",
@@ -461,68 +444,62 @@ tailwind.config = {
   const db = firebase.firestore();
   const USER_DOC = db.collection('syllabus_tracker').doc('global_user_1');
 
-  // Application State
   let completedTopicsMap = {};
   let targetedActiveFilter = 'all';
 
-  // Structural Template Layout Compiler Natively Generating Components Grid
   function renderCurriculumStructure() {
     const root = document.getElementById('subject-grid-root');
     root.innerHTML = '';
 
     curriculumSyllabus.forEach(subject => {
-      // Apply structural filter rules
       if (targetedActiveFilter === 'sem1' && subject.semester !== 1) return;
       if (targetedActiveFilter === 'sem3' && subject.semester !== 3) return;
 
       const subjectCard = document.createElement('div');
-      subjectCard.className = "bg-white border border-vlc-border rounded-xl shadow-sm overflow-hidden flex flex-col justify-between";
+      subjectCard.className = "bg-neu-bg shadow-neu-out rounded-[30px] overflow-hidden flex flex-col justify-between p-6";
       subjectCard.id = `card-${subject.id}`;
 
-      // Build header UI for the subject
       let html = `
-        <div>
-          <div class="p-4 border-b border-vlc-border bg-[#fdfdfb]">
-            <div class="flex justify-between items-start gap-2 mb-2">
+        <div class="flex flex-col h-full">
+          <div class="mb-6 px-2">
+            <div class="flex justify-between items-start gap-2 mb-4">
               <div>
-                <span class="text-[10px] font-mono tracking-wider font-bold text-vlc-orange bg-orange-50 px-2 py-0.5 rounded border border-orange-200">SEM ${subject.semester} • ${subject.code}</span>
-                <h3 class="font-bold text-base text-vlc-textDark mt-1">${subject.title}</h3>
+                <span class="text-[10px] font-mono tracking-widest font-medium text-neu-highlight shadow-neu-sm-in px-3 py-1 rounded-full">SEM ${subject.semester} • ${subject.code}</span>
+                <h3 class="font-light text-xl text-neu-text mt-4 tracking-wide">${subject.title}</h3>
               </div>
               <div class="text-right">
-                <span id="perc-${subject.id}" class="font-mono text-sm font-black text-vlc-orange">0%</span>
+                <span id="perc-${subject.id}" class="font-mono text-lg font-light text-neu-highlight">0%</span>
               </div>
             </div>
             
-            <!-- Individual Subject Progress Line Tracker -->
-            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden p-0.5 border border-gray-200">
-              <div id="bar-${subject.id}" class="bg-vlc-orange h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+            <div class="w-full shadow-neu-in h-3 rounded-full overflow-hidden p-1">
+              <div id="bar-${subject.id}" class="bg-neu-bg shadow-neu-out h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
             </div>
           </div>
           
-          <div class="p-4 space-y-4 max-h-[380px] overflow-y-auto custom-scrollbar bg-[#fffdfa]">
+          <div class="space-y-6 max-h-[350px] overflow-y-auto custom-scrollbar px-2 py-2">
       `;
 
-      // Generate items loop inside targeted scopes
       subject.units.forEach((unit, unitIdx) => {
         html += `
-          <div>
-            <h4 class="text-xs font-bold text-vlc-textDark border-b border-vlc-border pb-1 mb-2 uppercase tracking-wide font-mono flex items-center gap-1.5">
-              <i class="fa-solid fa-folder-open text-amber-500 text-[11px]"></i> ${unit.name}
+          <div class="shadow-neu-sm-out p-5 rounded-[20px]">
+            <h4 class="text-[11px] font-medium text-neu-text pb-2 mb-4 border-b border-neu-accent/20 uppercase tracking-widest font-mono flex items-center gap-2">
+              <i class="fa-regular fa-folder text-neu-highlight"></i> ${unit.name}
             </h4>
-            <ul class="space-y-1.5 pl-2">
+            <ul class="space-y-4">
         `;
 
         unit.topics.forEach((topic, topicIdx) => {
           const uniqueId = `${subject.id}_u${unitIdx}_t${topicIdx}`;
           html += `
-            <li class="flex items-start space-x-2.5 text-xs text-vlc-textDark hover:bg-vlc-warmBg p-1 rounded transition-colors group">
+            <li class="flex items-start space-x-3 text-xs text-neu-text transition-colors group">
               <input 
                 type="checkbox" 
                 id="${uniqueId}" 
-                class="mt-0.5 h-4 w-4 rounded border-vlc-border focus:ring-0 cursor-pointer flex-shrink-0"
+                class="mt-0.5 flex-shrink-0 cursor-pointer"
                 onchange="toggleTopicCompletion('${uniqueId}')"
               >
-              <label for="${uniqueId}" class="cursor-pointer select-none leading-tight group-hover:text-black">${topic}</label>
+              <label for="${uniqueId}" class="cursor-pointer select-none leading-relaxed font-light">${topic}</label>
             </li>
           `;
         });
@@ -539,7 +516,6 @@ tailwind.config = {
     evaluateProgressCalculations();
   }
 
-  // Completes real-time evaluation update loops
   function evaluateProgressCalculations() {
     let grandTotalCount = 0;
     let grandCompletedCount = 0;
@@ -560,7 +536,6 @@ tailwind.config = {
         });
       });
 
-      // Update subject components DOM progress indicators if active
       const bar = document.getElementById(`bar-${subject.id}`);
       const percText = document.getElementById(`perc-${subject.id}`);
       if (bar && percText) {
@@ -570,7 +545,6 @@ tailwind.config = {
       }
     });
 
-    // Update Global Widgets layout elements
     const globalPerc = grandTotalCount > 0 ? Math.round((grandCompletedCount / grandTotalCount) * 100) : 0;
     document.getElementById('global-progress-bar').style.width = `${globalPerc}%`;
     document.getElementById('global-perc').innerText = `${globalPerc}%`;
@@ -578,7 +552,6 @@ tailwind.config = {
     document.getElementById('global-rem').innerText = (grandTotalCount - grandCompletedCount);
   }
 
-  // Mutates completion states map and invokes backup operations
   function toggleTopicCompletion(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -588,7 +561,6 @@ tailwind.config = {
     }
   }
 
-  // Restore states after complete structural rendering loops
   function restoreCheckboxStates() {
     Object.keys(completedTopicsMap).forEach(id => {
       const el = document.getElementById(id);
@@ -596,60 +568,57 @@ tailwind.config = {
     });
   }
 
-  // Dynamic filter context updates switching views
   function switchTab(type) {
     targetedActiveFilter = type;
     ['all', 'sem1', 'sem3'].forEach(t => {
       const btn = document.getElementById(`tab-${t}`);
       if (t === type) {
-        btn.className = "px-5 py-2.5 font-bold text-sm border-b-2 border-vlc-orange text-vlc-orange transition-all";
+        btn.className = "px-6 py-3 font-medium text-sm shadow-neu-in text-neu-highlight rounded-2xl transition-all";
       } else {
-        btn.className = "px-5 py-2.5 font-medium text-sm text-vlc-textMuted hover:text-vlc-textDark transition-all";
+        btn.className = "px-6 py-3 font-medium text-sm shadow-neu-out text-neu-text hover:text-neu-highlight rounded-2xl transition-all";
       }
     });
     renderCurriculumStructure();
   }
 
-  // Cloud Storage Engine Sync Loops
-    function updateSyncStatus(msg, isProcessing = false, isError = false) {
-      const statusBox = document.getElementById('sync-status');
-      if (isProcessing) {
-        statusBox.innerHTML = `<i class="fa-solid fa-arrows-rotate text-vlc-orange animate-spin"></i> ${msg}`;
-      } else if (isError) {
-        statusBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-red-500"></i> <span class="text-red-600 font-bold">${msg}</span>`;
+  function updateSyncStatus(msg, isProcessing = false, isError = false) {
+    const statusBox = document.getElementById('sync-status');
+    if (isProcessing) {
+      statusBox.innerHTML = `<i class="fa-solid fa-arrows-rotate text-neu-highlight animate-spin"></i> ${msg}`;
+    } else if (isError) {
+      statusBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-red-400"></i> <span class="text-red-400 font-medium">${msg}</span>`;
+    } else {
+      statusBox.innerHTML = `<i class="fa-solid fa-cloud-check text-neu-highlight"></i> <span class="text-neu-highlight font-medium">${msg}</span>`;
+    }
+  }
+
+  async function saveCloudState() {
+    updateSyncStatus('Syncing changes...', true);
+    try {
+      await USER_DOC.set({ completedTopicsMap });
+      updateSyncStatus('Cloud Synced');
+    } catch (e) {
+      console.error("Cloud synchronization failure:", e);
+      updateSyncStatus('Sync Error (Check Console)', false, true);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    updateSyncStatus('Loading curriculum data...', true);
+    try {
+      const doc = await USER_DOC.get();
+      if (doc.exists) {
+        completedTopicsMap = doc.data().completedTopicsMap || {};
+        updateSyncStatus('Data Loaded & Synced');
       } else {
-        statusBox.innerHTML = `<i class="fa-solid fa-cloud-check text-green-600"></i> <span class="text-green-700 font-bold">${msg}</span>`;
+        updateSyncStatus('New Profile Ready');
       }
+    } catch(e) {
+      console.error("Initialization data lookup crashed:", e);
+      updateSyncStatus('Offline / Connection Failed', false, true);
     }
-
-    async function saveCloudState() {
-      updateSyncStatus('Syncing changes...', true);
-      try {
-        await USER_DOC.set({ completedTopicsMap });
-        updateSyncStatus('Cloud Synced');
-      } catch (e) {
-        console.error("Cloud synchronization failure:", e);
-        updateSyncStatus('Sync Error (Check Console)', false, true);
-      }
-    }
-
-    // Lifecyle Initialization Hook Loading Initial Values
-    window.addEventListener('DOMContentLoaded', async () => {
-      updateSyncStatus('Loading curriculum data...', true);
-      try {
-        const doc = await USER_DOC.get();
-        if (doc.exists) {
-                completedTopicsMap = doc.data().completedTopicsMap || {};
-                updateSyncStatus('Data Loaded & Synced');
-              } else {
-                updateSyncStatus('New Profile Ready');
-              }
-      } catch(e) {
-        console.error("Initialization data lookup crashed:", e);
-        updateSyncStatus('Offline / Connection Failed', false, true);
-      }
-      renderCurriculumStructure();
-    });
+    renderCurriculumStructure();
+  });
   </script>
 </body>
 </html>
