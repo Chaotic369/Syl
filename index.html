@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BCA Curriculum Progress Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        vlc: {
+          orange: '#ff8800',
+          orangeHover: '#e67e22',
+          warmBg: '#fdfaf2',
+          cardBg: '#ffffff',
+          textDark: '#2c3e50',
+          textMuted: '#7f8c8d',
+          border: '#e4dec9'
+        }
+      },
+      fontFamily: {
+        sans: ['Open Sans', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+<style>
+  body {
+    background-color: #fdfaf2;
+    color: #2c3e50;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #fdfaf2;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #ff8800;
+    border-radius: 3px;
+  }
+  input[type="checkbox"] {
+    accent-color: #ff8800;
+  }
+</style>
+</head>
+<body class="font-sans antialiased min-height-screen">
+
+  <!-- VLC Style Top Bar Navigation Header -->
+  <header class="bg-white border-b border-vlc-border sticky top-0 z-50 transition-all shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <!-- VLC Orange Cone Icon Emulation via FontAwesome -->
+        <i class="fa-solid fa-traffic-cone text-vlc-orange text-3xl"></i>
+        <div>
+          <h1 class="font-bold text-lg tracking-tight text-vlc-textDark">Srinath University Tracker</h1>
+          <p class="text-xs text-vlc-textMuted uppercase font-mono tracking-widest">BCA Generative AI & ML</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4 mt-2 sm:mt-0">
+        <div id="sync-status" class="font-mono text-xs text-vlc-textMuted bg-vlc-warmBg px-3 py-1.5 rounded border border-vlc-border flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up text-vlc-orange animate-pulse"></i> Initializing...
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Showcase Container mimicking VLC Website Layout Structure -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- Hero Box (VLC Download Widget Style Showcase Layout) -->
+    <section class="bg-white border border-vlc-border rounded-xl p-6 mb-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 bg-gradient-to-br from-white to-[#fffdf9]">
+      <div class="space-y-3 flex-1">
+        <span class="bg-amber-100 text-vlc-orange font-mono text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">ACADEMIC DASHBOARD</span>
+        <h2 class="text-2xl font-bold tracking-tight text-vlc-textDark sm:text-3xl">Course Syllabus Completion Monitor</h2>
+        <p class="text-vlc-textMuted text-sm max-w-2xl leading-relaxed">
+          Track and synchronize your milestones dynamically across your Semester 1 Mathematics foundations and your full comprehensive Semester 3 curriculum pipeline.
+        </p>
+      </div>
+      
+      <!-- Big VLC Download Style Global Tracker Component -->
+      <div class="w-full md:w-80 bg-vlc-warmBg border border-vlc-border p-5 rounded-xl shadow-inner flex flex-col justify-between space-y-4">
+        <div>
+          <div class="flex justify-between items-end mb-1">
+            <span class="text-xs font-bold font-mono text-vlc-textDark">TOTAL SYLLABUS STATUS</span>
+            <span id="global-perc" class="text-2xl font-black font-mono text-vlc-orange">0%</span>
+          </div>
+          <!-- Target Progress Bar -->
+          <div class="w-full bg-orange-100 rounded-full h-4 overflow-hidden border border-orange-200 p-0.5">
+            <div id="global-progress-bar" class="bg-vlc-orange h-full rounded-full transition-all duration-500 ease-out style='width: 0%'"></div>
+          </div>
+        </div>
+        <div class="text-xs text-vlc-textMuted font-mono flex justify-between">
+          <span>Completed: <strong id="global-count" class="text-vlc-textDark">0</strong> items</span>
+          <span>Remaining: <strong id="global-rem" class="text-vlc-textDark">0</strong> left</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Semester Content Selector Toggles -->
+    <div class="flex space-x-2 border-b border-vlc-border mb-6">
+      <button onclick="switchTab('all')" id="tab-all" class="px-5 py-2.5 font-bold text-sm border-b-2 border-vlc-orange text-vlc-orange transition-all">All Semesters</button>
+      <button onclick="switchTab('sem1')" id="tab-sem1" class="px-5 py-2.5 font-medium text-sm text-vlc-textMuted hover:text-vlc-textDark transition-all">Semester I</button>
+      <button onclick="switchTab('sem3')" id="tab-sem3" class="px-5 py-2.5 font-medium text-sm text-vlc-textMuted hover:text-vlc-textDark transition-all">Semester III</button>
+    </div>
+
+    <!-- Dynamic Target Container for Subject Cards Grid -->
+    <div id="subject-grid-root" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Injected programmatically via structural JSON arrays below -->
+    </div>
+
+  </main>
+
+  <!-- Legacy Core Scripts Compat Integrations -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <script>
+  // Complete Syllabus Dataset (Books and Resource items completely excluded)
+  const curriculumSyllabus = [
+    {
+      id: "sem1_discrete_math",
+      semester: 1,
+      code: "SUFCBCAGAI103",
+      title: "Discrete Mathematics",
+      units: [
+        {
+          name: "Unit 1: Sets, Relations and Functions",
+          topics: [
+            "Definitions and Notations", "Subset, Operation on Sets", "Algebra of Sets, Venn diagram", 
+            "Ordered Pairs and Cartesian Product", "Relations on Sets, Types of Relations in a Sets", 
+            "Properties of Relations, Partition of a Sets", "Representation of Relations", 
+            "Function, Types of Functions", "Compositions of Functions, Growth of Functions"
+          ]
+        },
+        {
+          name: "Unit 2: Combinatorics",
+          topics: [
+            "Basic Counting Principles", "Factorial Notation", "Permutation & Combination Introduction", 
+            "Pigeonhole Principle", "The Inclusion - Exclusion Principle", "Binomial Theorem", "Multinomial Coefficients"
+          ]
+        },
+        {
+          name: "Unit 3: Propositional Logic",
+          topics: [
+            "Proposition & Logical Connectives", "Logical Equivalence & Algebra of Propositions", 
+            "Well Formed Formula", "Tautologies and Contradictions", "Mathematical Induction"
+          ]
+        },
+        {
+          name: "Unit 4: Graph Theory",
+          topics: [
+            "Basic Terminology & Types of Graphs", "Subgraphs and Isomorphic Graphs", "Operations of Graphs", 
+            "Paths, Circuits, Cycles and Connectivity", "Eulerian and Hamiltonian graph", 
+            "Shortest Path Problems & Dijkstra's Algorithm", "Planar Graphs & Graph Colouring", 
+            "Trees and Their Properties", "Spanning Tree & Minimal Spanning Trees", "Kruskal's Algorithm & Prim's Algorithm"
+          ]
+        }
+      ]
+    },
+    {
+      id: "sem3_os",
+      semester: 3,
+      code: "SUCCBCAGAI301",
+      title: "Operating System",
+      units: [
+        {
+          name: "Unit 1: Introduction & Operating System Structure",
+          topics: [
+            "Operating system Goal & functions", "OS System Components", "Batch, Multiprogramming, Multi-tasking Systems", 
+            "Multiprocessor, Real-Time, Network, Distributed Systems", "User modes & Kernels", "System calls and system programs"
+          ]
+        },
+        {
+          name: "Unit 2: Process Basics, CPU Scheduling & Deadlock",
+          topics: [
+            "Process Concept & Process Control Block (PCB)", "Process identification information & States", 
+            "Process Transition Diagram & Schedulers", "CPU Bound and I/O Bound Processes", "Context Switch mechanisms", 
+            "CPU Scheduling Performance Criteria", "Scheduling Algorithms (FCFS, SJF, SRTF, RR, Priority)", 
+            "Deadlock Characterization", "Deadlock Prevention, Avoidance and Detection"
+          ]
+        },
+        {
+          name: "Unit 3: Memory Management, Virtual Memory & Disk Management",
+          topics: [
+            "Memory Management Requirements", "Fixed and Variable Partitioning", "Allocation Strategies (First Fit, Best Fit, Worst Fit)", 
+            "Fragmentation & Swapping", "Paging and Segmentation structures", "Demand Paging mechanisms", 
+            "Performance of Demand Paging & Page Replacement", "Disk Basics & Storage structures", "Disk Scheduling & Total Transfer Time"
+          ]
+        },
+        {
+          name: "Unit 4: File System",
+          topics: [
+            "File Allocation Methods", "Free-space Management", "File Organization and Access Mechanisms", 
+            "File Directories & Sharing", "File System Implementation Issues", "File System Protection and Security"
+          ]
+        }
+      ]
+    },
+    {
+      id: "sem3_dbms",
+      semester: 3,
+      code: "SUCCBCAGAI302",
+      title: "Database Management System",
+      units: [
+        {
+          name: "Unit 1: Introduction & Entity Relationship (ER) Modelling",
+          topics: [
+            "Characteristics of Database Approach", "Data Models", "Database System Architecture", 
+            "Data Independence rules", "Entity types, Relationships, and Constraints"
+          ]
+        },
+        {
+          name: "Unit 2: Relational Data Model",
+          topics: ["Relational Model Concepts", "Relational Constraints", "Relational Algebra", "SQL Queries formulation"]
+        },
+        {
+          name: "Unit 3: Database Design",
+          topics: ["Mapping ER/EER model to Relational Database", "Functional Dependencies", "Lossless Decomposition", "Normal Forms up to BCNF"]
+        },
+        {
+          name: "Unit 4: Transaction Processing, File Structure and Indexing",
+          topics: [
+            "ACID Properties", "Concurrency Control mechanisms", "Operations on Files", "Unordered and Ordered Records files", 
+            "Overview of File Organizations", "Primary, Secondary, and Clustering Indexing", "Multilevel Indexing using B and B+ trees"
+          ]
+        }
+      ]
+    },
+    {
+      id: "sem3_java",
+      semester: 3,
+      code: "SUCCBCAGAI303",
+      title: "Java Programming",
+      units: [
+        {
+          name: "Unit 1: Introduction to Java, Arrays, Strings and I/O",
+          topics: [
+            "Java Architecture and Features", "Semantic and Syntax Differences (C++ vs Java)", "Compiling and Executing Java Programs", 
+            "Variables, Constants, Keywords, Data Types", "Operators (Arithmetic, Logical, Bitwise) & Expressions", 
+            "Decision Making Constructs and Nesting Loops", "Java Methods scope, definition, and arguments", 
+            "Creating & Using Arrays (1D and Multi-dimensional)", "Java String Class & String Immutability", 
+            "String manipulation & StringBuffer classes", "Simple I/O using System.out and Scanner class", "Byte and Character Streams console/file tracking"
+          ]
+        },
+        {
+          name: "Unit 2: Object-Oriented Programming, Packages, Interfaces & Wrapper Classes",
+          topics: [
+            "Principles of OOP, Classes, and Members Access Control", "Class Constructors & Method Overloading", 
+            "Class Variables, Methods, and Objects Parameters", "Final Classes, Object Class, and Garbage Collection", 
+            "Inheritance (Single Level and Multilevel)", "Method Overriding & Dynamic Method Dispatch", "Abstract Classes execution", 
+            "Interfaces and Packages creation/extension", "Package and Class Visibility rules", "Standard Java Packages (util, lang, io, net)", 
+            "Wrapper Classes, Autoboxing/Unboxing, Enumerations, Metadata"
+          ]
+        },
+        {
+          name: "Unit 3: Exception Handling, Threading, Networking and Database Connectivity",
+          topics: [
+            "Exception Types & Catch Blocks Hierarchy", "Built-in Exceptions & Custom Exceptions creation", 
+            "Multi-threading: Thread Class and Runnable Interface", "Thread Prioritization, Synchronization, and Communication", 
+            "Suspending and Resuming Threads", "Using java.net package (TCP/IP and Datagram)", "Accessing databases using JDBC"
+          ]
+        },
+        {
+          name: "Unit 4: Applets and Event Handling",
+          topics: [
+            "Java Applets Lifecycle & Graphics/Sound integration", "Event Handling Mechanisms & Listener Interfaces", 
+            "Adapter and Inner Classes", "GUI design using AWT Controls & Swing components", 
+            "Layout Managers, Menus, Events and Listeners execution", "Graphic objects processing & Fonts configuration", "Overview of Servlets"
+          ]
+        }
+      ]
+    },
+    {
+      id: "sem3_se",
+      semester: 3,
+      code: "SUCCBCAGAI304",
+      title: "Software Engineering",
+      units: [
+        {
+          name: "Unit 1: Introduction & Requirement Analysis",
+          topics: [
+            "Evolving Role and Characteristics of Software", "Software Engineering as a Layered Technology", "Software Process Framework & Activities", 
+            "Process Models & CMMI parameters", "Software Requirement Analysis engineering", 
+            "Requirement Analysis and Modelling Techniques", "Flow Oriented Modelling & Need for SRS", "Characteristics and Components of SRS"
+          ]
+        },
+        {
+          name: "Unit 2: Software Project, Risk & Quality Management",
+          topics: [
+            "Estimation in Project Planning & Scheduling", "Software Risks Identification, Projection, and Refinement", 
+            "RMMM Plan formulation", "Quality Concepts & Software Quality Assurance", "Software Reviews & Metrics for Process/Projects"
+          ]
+        },
+        {
+          name: "Unit 3: Design Engineering",
+          topics: [
+            "Design Concepts & Architectural Elements", "Software Architecture design", "Data Design at Architectural and Component Level", 
+            "Mapping of Data Flow into Software Architecture", "Modelling Component Level Design"
+          ]
+        },
+        {
+          name: "Unit 4: Testing Strategies & Tactics",
+          topics: [
+            "Software Testing Fundamentals", "Strategic Approach to Testing conventional software", 
+            "Validation Testing & System Testing", "Black-Box Testing & White-Box Testing execution", "Basis Path Testing paradigms"
+          ]
+        }
+      ]
+    },
+    {
+      id: "sem3_daa",
+      semester: 3,
+      code: "SUCCBCAGA1305",
+      title: "Design and Analysis of Algorithms",
+      units: [
+        {
+          name: "Unit 1: Basic Design and Analysis techniques of Algorithms",
+          topics: ["Correctness of Algorithm", "Iterative techniques analysis", "Divide and Conquer paradigm", "Dynamic Programming algorithms", "Greedy Algorithms concepts"]
+        },
+        {
+          name: "Unit 2: Sorting and Searching Techniques",
+          topics: [
+            "Elementary Sorting (Bubble, Insertion, Merge Sort)", "Advanced Sorting (Heap Sort, Quick Sort)", 
+            "Linear Time Sorting (Bucket, Radix, Count Sort)", "Searching Techniques execution", "Medians & Order Statistics complexity analysis"
+          ]
+        },
+        {
+          name: "Unit 3: Lower Bounding Techniques",
+          topics: ["Decision Trees framework", "Balanced Trees", "Red-Black Trees operations"]
+        },
+        {
+          name: "Unit 4: Graphs",
+          topics: ["Breadth First Search (BFS) and Applications", "Depth First Search (DFS) and Applications", "Minimum Spanning Trees processing"]
+        }
+      ]
+    },
+    {
+      id: "sem3_dbms_lab",
+      semester: 3,
+      code: "SUCPBCAGA1306",
+      title: "Database Management Systems Lab",
+      units: [
+        {
+          name: "Database Schemas Practice",
+          topics: ["EMPLOYEE Schema formulation and constraints verification", "DEPARTMENT Schema initialization parameters"]
+        },
+        {
+          name: "Query List Execution: Section-I",
+          topics: [
+            "Query 1: Display Emp details with Eno first", "Query 2: Display unique Jobs from Emp table", "Query 3: Concatenated Emp Name and Job", 
+            "Query 4: Comma-separated columns as THE OUTPUT", "Query 5: Display items earning more than $2850", "Query 6: Filter Name and Dno for Eno 7900", 
+            "Query 7: Filter values outside range $1500 and $2850", "Query 8: Filter Dept 10 and 30 in alphabetical order", 
+            "Query 9: Name and Hire Date of employees hired in 1981", "Query 10: Find employees without a current Manager"
+          ]
+        },
+        {
+          name: "Query List Execution: Section-II",
+          topics: [
+            "Query 1: Display tracking details for employees earning commission", "Query 2: Sorting data descending by Salary/Commission", 
+            "Query 3: Filter entries where third letter of name is A", "Query 4: Complex multi-conditional logic on names/departments", 
+            "Query 5: Custom calculation parameters on commissions/salaries", "Query 6: Current Date retrieval tracking", 
+            "Query 7: Salary Review Date (1st Monday after 6 months)", "Query 8: Months counting calculation between today and hire date", 
+            "Query 9: Formatted output mapping Dream Salary column", "Query 10: String mutations using capitalized filters on matching characters"
+          ]
+        }
+      ]
+    },
+    {
+      id: "sem3_java_lab",
+      semester: 3,
+      code: "SUCPBCAGA1307",
+      title: "Java Programming-Lab",
+      units: [
+        {
+          name: "Unit 1 Lab Core Foundations",
+          topics: [
+            "Prog 1: Command line arguments integers sum", "Prog 2: Factorial evaluation trace", "Prog 3: Dynamic single dimensional array length allocations", 
+            "Prog 4: Multi-dimensional array lengths profiling", "Prog 5: Decimal to binary translation execution", "Prog 6: Interactive keyboard prime evaluation check", 
+            "Prog 7: Interactive loop totals utilizing arguments thresholds", "Prog 8: Manipulations tracking on String / StringBuffer tools", 
+            "Prog 9: Distance evaluation objects processing via this pointers"
+          ]
+        },
+        {
+          name: "Unit 2 Lab Constructs",
+          topics: [
+            "Prog 1: Distance class constructors extensions and cloning routines", "Prog 2: Type matching tracking during function overloading execution", 
+            "Prog 3: Access specifiers scope tracking and value/reference parameters", "Prog 4: Static functions tracking and varargs implementation", 
+            "Prog 5: Autoboxing and unboxing primitives wrappers mapping"
+          ]
+        },
+        {
+          name: "Unit 3 Lab Packages & Multithreading",
+          topics: [
+            "Prog 3: Multi-file Scanner tools interaction across discrete files", "Prog 4: Reusable multilevel package generating Fibonacci tracking", 
+            "Prog 5: Levels of protection architectures within sub-classes packages mapping"
+          ]
+        },
+        {
+          name: "Unit 4 Lab Exceptions & System Interacting Structures",
+          topics: [
+            "Prog 1: DivideByZero handling trapping ArithmeticException objects", "Prog 2: Nested try structures resolution testing order metrics", 
+            "Prog 3: Custom local Exception class creation and error propagation handling"
+          ]
+        }
+      ]
+    }
+  ];
+
+  // Cloud Project Infrastructure Initialization Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAHDMiGbQT6mgYON0mMmGTfmeGSkKMgPBM",
+    authDomain: "qnea-aff56.firebaseapp.com",
+    projectId: "qnea-aff56",
+    storageBucket: "qnea-aff56.firebasestorage.app",
+    messagingSenderId: "109083120476",
+    appId: "1:109083120476:web:0a5e5f024df11b53d12799"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const USER_DOC = db.collection('syllabus_tracker').doc('global_user_1');
+
+  // Application State
+  let completedTopicsMap = {};
+  let targetedActiveFilter = 'all';
+
+  // Structural Template Layout Compiler Natively Generating Components Grid
+  function renderCurriculumStructure() {
+    const root = document.getElementById('subject-grid-root');
+    root.innerHTML = '';
+
+    curriculumSyllabus.forEach(subject => {
+      // Apply structural filter rules
+      if (targetedActiveFilter === 'sem1' && subject.semester !== 1) return;
+      if (targetedActiveFilter === 'sem3' && subject.semester !== 3) return;
+
+      const subjectCard = document.createElement('div');
+      subjectCard.className = "bg-white border border-vlc-border rounded-xl shadow-sm overflow-hidden flex flex-col justify-between";
+      subjectCard.id = `card-${subject.id}`;
+
+      // Build header UI for the subject
+      let html = `
+        <div>
+          <div class="p-4 border-b border-vlc-border bg-[#fdfdfb]">
+            <div class="flex justify-between items-start gap-2 mb-2">
+              <div>
+                <span class="text-[10px] font-mono tracking-wider font-bold text-vlc-orange bg-orange-50 px-2 py-0.5 rounded border border-orange-200">SEM ${subject.semester} • ${subject.code}</span>
+                <h3 class="font-bold text-base text-vlc-textDark mt-1">${subject.title}</h3>
+              </div>
+              <div class="text-right">
+                <span id="perc-${subject.id}" class="font-mono text-sm font-black text-vlc-orange">0%</span>
+              </div>
+            </div>
+            
+            <!-- Individual Subject Progress Line Tracker -->
+            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden p-0.5 border border-gray-200">
+              <div id="bar-${subject.id}" class="bg-vlc-orange h-full rounded-full transition-all duration-300 ease-out" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <div class="p-4 space-y-4 max-h-[380px] overflow-y-auto custom-scrollbar bg-[#fffdfa]">
+      `;
+
+      // Generate items loop inside targeted scopes
+      subject.units.forEach((unit, unitIdx) => {
+        html += `
+          <div>
+            <h4 class="text-xs font-bold text-vlc-textDark border-b border-vlc-border pb-1 mb-2 uppercase tracking-wide font-mono flex items-center gap-1.5">
+              <i class="fa-solid fa-folder-open text-amber-500 text-[11px]"></i> ${unit.name}
+            </h4>
+            <ul class="space-y-1.5 pl-2">
+        `;
+
+        unit.topics.forEach((topic, topicIdx) => {
+          const uniqueId = `${subject.id}_u${unitIdx}_t${topicIdx}`;
+          html += `
+            <li class="flex items-start space-x-2.5 text-xs text-vlc-textDark hover:bg-vlc-warmBg p-1 rounded transition-colors group">
+              <input 
+                type="checkbox" 
+                id="${uniqueId}" 
+                class="mt-0.5 h-4 w-4 rounded border-vlc-border focus:ring-0 cursor-pointer flex-shrink-0"
+                onchange="toggleTopicCompletion('${uniqueId}')"
+              >
+              <label for="${uniqueId}" class="cursor-pointer select-none leading-tight group-hover:text-black">${topic}</label>
+            </li>
+          `;
+        });
+
+        html += `</ul></div>`;
+      });
+
+      html += `</div></div>`;
+      subjectCard.innerHTML = html;
+      root.appendChild(subjectCard);
+    });
+
+    restoreCheckboxStates();
+    evaluateProgressCalculations();
+  }
+
+  // Completes real-time evaluation update loops
+  function evaluateProgressCalculations() {
+    let grandTotalCount = 0;
+    let grandCompletedCount = 0;
+
+    curriculumSyllabus.forEach(subject => {
+      let subjectTotal = 0;
+      let subjectCompleted = 0;
+
+      subject.units.forEach((unit, unitIdx) => {
+        unit.topics.forEach((_, topicIdx) => {
+          grandTotalCount++;
+          subjectTotal++;
+          const uniqueId = `${subject.id}_u${unitIdx}_t${topicIdx}`;
+          if (completedTopicsMap[uniqueId]) {
+            grandCompletedCount++;
+            subjectCompleted++;
+          }
+        });
+      });
+
+      // Update subject components DOM progress indicators if active
+      const bar = document.getElementById(`bar-${subject.id}`);
+      const percText = document.getElementById(`perc-${subject.id}`);
+      if (bar && percText) {
+        const subPerc = subjectTotal > 0 ? Math.round((subjectCompleted / subjectTotal) * 100) : 0;
+        bar.style.width = `${subPerc}%`;
+        percText.innerText = `${subPerc}%`;
+      }
+    });
+
+    // Update Global Widgets layout elements
+    const globalPerc = grandTotalCount > 0 ? Math.round((grandCompletedCount / grandTotalCount) * 100) : 0;
+    document.getElementById('global-progress-bar').style.width = `${globalPerc}%`;
+    document.getElementById('global-perc').innerText = `${globalPerc}%`;
+    document.getElementById('global-count').innerText = grandCompletedCount;
+    document.getElementById('global-rem').innerText = (grandTotalCount - grandCompletedCount);
+  }
+
+  // Mutates completion states map and invokes backup operations
+  function toggleTopicCompletion(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      completedTopicsMap[id] = el.checked;
+      evaluateProgressCalculations();
+      saveCloudState();
+    }
+  }
+
+  // Restore states after complete structural rendering loops
+  function restoreCheckboxStates() {
+    Object.keys(completedTopicsMap).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.checked = !!completedTopicsMap[id];
+    });
+  }
+
+  // Dynamic filter context updates switching views
+  function switchTab(type) {
+    targetedActiveFilter = type;
+    ['all', 'sem1', 'sem3'].forEach(t => {
+      const btn = document.getElementById(`tab-${t}`);
+      if (t === type) {
+        btn.className = "px-5 py-2.5 font-bold text-sm border-b-2 border-vlc-orange text-vlc-orange transition-all";
+      } else {
+        btn.className = "px-5 py-2.5 font-medium text-sm text-vlc-textMuted hover:text-vlc-textDark transition-all";
+      }
+    });
+    renderCurriculumStructure();
+  }
+
+  // Cloud Storage Engine Sync Loops
+  function updateSyncStatus(msg, isProcessing = false) {
+    const statusBox = document.getElementById('sync-status');
+    if (isProcessing) {
+      statusBox.innerHTML = `<i class="fa-solid fa-arrows-rotate text-vlc-orange animate-spin"></i> ${msg}`;
+    } else {
+      statusBox.innerHTML = `<i class="fa-solid fa-cloud-check text-green-600"></i> ${msg}`;
+    }
+  }
+
+  async function saveCloudState() {
+    updateSyncStatus('Syncing changes...', true);
+    try {
+      await USER_DOC.set({ completedTopicsMap });
+      updateSyncStatus('Cloud Synced');
+    } catch (e) {
+      console.error("Cloud synchronization failure:", e);
+      statusBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-red-500"></i> Sync Error`;
+    }
+  }
+
+  // Lifecyle Initialization Hook Loading Initial Values
+  window.addEventListener('DOMContentLoaded', async () => {
+    updateSyncStatus('Loading curriculum data...', true);
+    try {
+      const doc = await USER_DOC.get();
+      if (doc.exists) {
+        completedTopicsMap = doc.data().completedTopicsMap || {};
+        updateSyncStatus('Data Loaded');
+      } else {
+        updateSyncStatus('No remote profile found');
+      }
+    } catch(e) {
+      console.error("Initialization data lookup crashed:", e);
+      updateSyncStatus('Offline Mode active');
+    }
+    renderCurriculumStructure();
+  });
+  </script>
+</body>
+</html>
