@@ -88,15 +88,15 @@ tailwind.config = {
 
   <main class="max-w-7xl mx-auto px-4 py-8 pt-12">
     
-      <section class="mb-12 flex justify-center">
-        <div class="w-full max-w-3xl bg-neu-bg shadow-neu-out p-6 rounded-full flex items-center gap-6">
-          <div id="sync-dot" class="w-4 h-4 rounded-full bg-neu-accent shrink-0 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2)] transition-colors duration-300 ml-2" title="Initializing..."></div>
-          <div class="w-full shadow-neu-in rounded-full h-5 overflow-hidden p-1.5 flex-1">
-            <div id="global-progress-bar" class="shadow-neu-out h-full rounded-full transition-all duration-500 ease-out bg-neu-bg" style="width: 0%"></div>
-          </div>
-          <span id="global-perc" class="text-2xl font-light font-mono text-neu-highlight shrink-0 w-16 text-right mr-4">0%</span>
-        </div>
-      </section>
+      <section class="mb-12 flex justify-center px-4 mt-6">
+              <div class="w-full max-w-3xl flex items-center gap-5">
+                <div id="sync-dot" class="w-4 h-4 rounded-full bg-neu-accent shrink-0 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2)] transition-colors duration-300" title="Initializing..."></div>
+                <div class="w-full shadow-neu-in rounded-full h-4 overflow-hidden p-1 flex-1 bg-neu-bg">
+                  <div id="global-progress-bar" class="shadow-neu-out h-full rounded-full transition-all duration-500 ease-out bg-neu-highlight" style="width: 0%"></div>
+                </div>
+                <span id="global-perc" class="text-3xl font-light font-mono text-neu-text shrink-0 min-w-[70px] text-right">0%</span>
+              </div>
+            </section>
 
     <div class="flex flex-wrap gap-4 mb-10 px-2">
       <button onclick="switchTab('all')" id="tab-all" class="px-6 py-3 font-medium text-sm shadow-neu-in text-neu-highlight rounded-2xl transition-all">All Semesters</button>
