@@ -15,17 +15,17 @@ tailwind.config = {
     extend: {
       colors: {
         neu: {
-          bg: '#ebecf0',
-          text: '#6a7c92',
-          accent: '#b0b8c4',
-          highlight: '#8da3bd'
+          bg: '#fbfaf6',
+          text: '#000000',
+          accent: '#666666',
+          highlight: '#000000'
         }
       },
       boxShadow: {
-        'neu-out': '10px 10px 20px rgba(163,177,198,0.6), -10px -10px 20px rgba(255,255,255,0.8)',
-        'neu-in': 'inset 8px 8px 16px rgba(163,177,198,0.6), inset -8px -8px 16px rgba(255,255,255,0.8)',
-        'neu-sm-out': '5px 5px 10px rgba(163,177,198,0.5), -5px -5px 10px rgba(255,255,255,0.8)',
-        'neu-sm-in': 'inset 3px 3px 6px rgba(163,177,198,0.5), inset -3px -3px 6px rgba(255,255,255,0.8)',
+        'neu-out': '10px 10px 20px rgba(212,208,200,0.6), -10px -10px 20px rgba(255,255,255,0.8)',
+        'neu-in': 'inset 8px 8px 16px rgba(212,208,200,0.6), inset -8px -8px 16px rgba(255,255,255,0.8)',
+        'neu-sm-out': '5px 5px 10px rgba(212,208,200,0.5), -5px -5px 10px rgba(255,255,255,0.8)',
+        'neu-sm-in': 'inset 3px 3px 6px rgba(212,208,200,0.5), inset -3px -3px 6px rgba(255,255,255,0.8)',
       },
       fontFamily: {
         sans: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
@@ -37,34 +37,34 @@ tailwind.config = {
 </script>
 <style>
   body {
-    background-color: #ebecf0;
-    color: #6a7c92;
-    font-weight: 300;
+    background-color: #fbfaf6;
+    color: #000000;
+    font-weight: 400;
   }
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #ebecf0;
-    box-shadow: inset 2px 2px 5px rgba(163,177,198,0.5), inset -2px -2px 5px rgba(255,255,255,0.8);
+    background: #fbfaf6;
+    box-shadow: inset 2px 2px 5px rgba(212,208,200,0.5), inset -2px -2px 5px rgba(255,255,255,0.8);
     border-radius: 4px;
     margin-block: 10px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #ebecf0;
-    box-shadow: 2px 2px 5px rgba(163,177,198,0.5), -2px -2px 5px rgba(255,255,255,0.8);
+    background: #fbfaf6;
+    box-shadow: 2px 2px 5px rgba(212,208,200,0.5), -2px -2px 5px rgba(255,255,255,0.8);
     border-radius: 4px;
   }
   input[type="checkbox"] {
     appearance: none;
-    background-color: #ebecf0;
+    background-color: #fbfaf6;
     margin: 0;
     font: inherit;
     color: currentColor;
     width: 1.25em;
     height: 1.25em;
     border-radius: 0.35em;
-    box-shadow: inset 3px 3px 6px rgba(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.8);
+    box-shadow: inset 3px 3px 6px rgba(212,208,200,0.6), inset -3px -3px 6px rgba(255,255,255,0.8);
     display: grid;
     place-content: center;
     transition: all 0.2s ease-in-out;
@@ -76,8 +76,8 @@ tailwind.config = {
     border-radius: 2px;
     transform: scale(0);
     transition: 150ms transform ease-in-out;
-    box-shadow: 2px 2px 4px rgba(163,177,198,0.6), -2px -2px 4px rgba(255,255,255,0.8);
-    background-color: #8da3bd;
+    box-shadow: 2px 2px 4px rgba(212,208,200,0.6), -2px -2px 4px rgba(255,255,255,0.8);
+    background-color: #000000;
   }
   input[type="checkbox"]:checked::before {
     transform: scale(1);
