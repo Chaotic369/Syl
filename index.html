@@ -14,18 +14,21 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        vlc: {
-          orange: '#ff8800',
-          orangeHover: '#e67e22',
-          warmBg: '#fdfaf2',
-          cardBg: '#ffffff',
-          textDark: '#2c3e50',
-          textMuted: '#7f8c8d',
-          border: '#e4dec9'
+        neu: {
+          bg: '#ebecf0',
+          text: '#6a7c92',
+          accent: '#b0b8c4',
+          highlight: '#8da3bd'
         }
       },
+      boxShadow: {
+        'neu-out': '10px 10px 20px rgba(163,177,198,0.6), -10px -10px 20px rgba(255,255,255,0.8)',
+        'neu-in': 'inset 8px 8px 16px rgba(163,177,198,0.6), inset -8px -8px 16px rgba(255,255,255,0.8)',
+        'neu-sm-out': '5px 5px 10px rgba(163,177,198,0.5), -5px -5px 10px rgba(255,255,255,0.8)',
+        'neu-sm-in': 'inset 3px 3px 6px rgba(163,177,198,0.5), inset -3px -3px 6px rgba(255,255,255,0.8)',
+      },
       fontFamily: {
-        sans: ['Open Sans', 'sans-serif'],
+        sans: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace']
       }
     }
@@ -34,21 +37,50 @@ tailwind.config = {
 </script>
 <style>
   body {
-    background-color: #fdfaf2;
-    color: #2c3e50;
+    background-color: #ebecf0;
+    color: #6a7c92;
+    font-weight: 300;
   }
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #fdfaf2;
+    background: #ebecf0;
+    box-shadow: inset 2px 2px 5px rgba(163,177,198,0.5), inset -2px -2px 5px rgba(255,255,255,0.8);
+    border-radius: 4px;
+    margin-block: 10px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #ff8800;
-    border-radius: 3px;
+    background: #ebecf0;
+    box-shadow: 2px 2px 5px rgba(163,177,198,0.5), -2px -2px 5px rgba(255,255,255,0.8);
+    border-radius: 4px;
   }
   input[type="checkbox"] {
-    accent-color: #ff8800;
+    appearance: none;
+    background-color: #ebecf0;
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 1.25em;
+    height: 1.25em;
+    border-radius: 0.35em;
+    box-shadow: inset 3px 3px 6px rgba(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.8);
+    display: grid;
+    place-content: center;
+    transition: all 0.2s ease-in-out;
+  }
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 2px;
+    transform: scale(0);
+    transition: 150ms transform ease-in-out;
+    box-shadow: 2px 2px 4px rgba(163,177,198,0.6), -2px -2px 4px rgba(255,255,255,0.8);
+    background-color: #8da3bd;
+  }
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
   }
 </style>
 </head>
